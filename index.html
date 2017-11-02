@@ -134,241 +134,251 @@ yea &lt;- officials %&gt;%
   group_by(photoUrl != &quot;NA&quot;) %&gt;%
   mutate(paste0(&quot;![image](&quot;, photoUrl, &quot;)&quot;)) 
 
-kable(officials)</code></pre>
+num.to.rep &lt;- unlist(lapply(parsed.data$offices$officialIndices, length))
+expanded &lt;- offices[rep(row.names(offices), num.to.rep), ]
+officials &lt;- officials %&gt;% mutate(index = row_number() -1)
+expanded &lt;- expanded %&gt;% mutate(index = row_number() -1) %&gt;%
+  rename(position = name) 
+joined &lt;- left_join(officials, expanded)</code></pre>
+<pre><code>## Joining, by = &quot;index&quot;</code></pre>
+<pre class="r"><code>joined &lt;- select(joined, name, position, party, emails, phones, photoUrl)
+
+
+kable(joined)</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th align="left">name</th>
+<th align="left">position</th>
 <th align="left">party</th>
 <th align="left">emails</th>
 <th align="left">phones</th>
-<th align="left">urls</th>
 <th align="left">photoUrl</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left"><a href="http://www.whitehouse.gov/">Donald J. Trump</a></td>
+<td align="left">President of the United States</td>
 <td align="left">Republican</td>
 <td align="left">NULL</td>
 <td align="left">(202) 456-1111</td>
-<td align="left"><a href="http://www.whitehouse.gov/" class="uri">http://www.whitehouse.gov/</a></td>
 <td align="left"><a href="https://www.whitehouse.gov/sites/whitehouse.gov/files/images/45/PE%20Color.jpg">https://www.whitehouse.gov/sites/whitehouse.gov/files/images/45/PE%20Color.jpg</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.whitehouse.gov/">Mike Pence</a></td>
+<td align="left">Vice-President of the United States</td>
 <td align="left">Republican</td>
 <td align="left">NULL</td>
 <td align="left">(202) 456-1111</td>
-<td align="left"><a href="http://www.whitehouse.gov/" class="uri">http://www.whitehouse.gov/</a></td>
 <td align="left"><a href="https://www.whitehouse.gov/sites/whitehouse.gov/files/images/45/VPE%20Color.jpg">https://www.whitehouse.gov/sites/whitehouse.gov/files/images/45/VPE%20Color.jpg</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://www.cantwell.senate.gov/">Maria Cantwell</a></td>
+<td align="left">United States Senate</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(202) 224-3441</td>
-<td align="left"><a href="https://www.cantwell.senate.gov/" class="uri">https://www.cantwell.senate.gov/</a></td>
 <td align="left"><a href="http://bioguide.congress.gov/bioguide/photo/C/C000127.jpg" class="uri">http://bioguide.congress.gov/bioguide/photo/C/C000127.jpg</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.murray.senate.gov/public/">Patty Murray</a></td>
+<td align="left">United States Senate</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(202) 224-2621</td>
-<td align="left"><a href="http://www.murray.senate.gov/public/" class="uri">http://www.murray.senate.gov/public/</a></td>
 <td align="left"><a href="http://bioguide.congress.gov/bioguide/photo/M/M001111.jpg" class="uri">http://bioguide.congress.gov/bioguide/photo/M/M001111.jpg</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://jayapal.house.gov/">Pramila Jayapal</a></td>
+<td align="left">United States House of Representatives WA-07</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(202) 225-3106</td>
-<td align="left"><a href="https://jayapal.house.gov/" class="uri">https://jayapal.house.gov/</a></td>
 <td align="left"><a href="https://jayapal.house.gov/sites/jayapal.house.gov/files/wysiwyg_uploaded/Official%20Photo_2017.03.10%20-%20Copy.jpg">https://jayapal.house.gov/sites/jayapal.house.gov/files/wysiwyg_uploaded/Official%20Photo_2017.03.10%20-%20Copy.jpg</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.governor.wa.gov/">Jay Inslee</a></td>
+<td align="left">Governor</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:Governor.JayInslee@governor.wa.gov">Governor.JayInslee@governor.wa.gov</a></td>
 <td align="left">(360) 902-4111</td>
-<td align="left"><a href="http://www.governor.wa.gov/" class="uri">http://www.governor.wa.gov/</a></td>
 <td align="left"><a href="http://www.governor.wa.gov/sites/default/files/images/720px-for-web_0.jpg" class="uri">http://www.governor.wa.gov/sites/default/files/images/720px-for-web_0.jpg</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.ltgov.wa.gov/">Cyrus Habib</a></td>
+<td align="left">Lieutenant Governor</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:ltgov@ltgov.wa.gov">ltgov@ltgov.wa.gov</a></td>
 <td align="left">(360) 786-7700</td>
-<td align="left"><a href="http://www.ltgov.wa.gov/" class="uri">http://www.ltgov.wa.gov/</a></td>
 <td align="left"><a href="http://www.ltgov.wa.gov/wp-content/uploads/2017/01/Senator-Habib-2015_CROPPED-225x300.jpg" class="uri">http://www.ltgov.wa.gov/wp-content/uploads/2017/01/Senator-Habib-2015_CROPPED-225x300.jpg</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://sdc.wastateleg.org/Pedersen/">Jamie Pedersen</a></td>
+<td align="left">WA State Senate District 43</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:Jamie.Pedersen@leg.wa.gov">Jamie.Pedersen@leg.wa.gov</a></td>
 <td align="left">(360) 786-7628</td>
-<td align="left"><a href="http://sdc.wastateleg.org/Pedersen/" class="uri">http://sdc.wastateleg.org/Pedersen/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://housedemocrats.wa.gov/legislators/Frank-Chopp/">Frank Chopp</a></td>
+<td align="left">WA State House District 43</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:Frank.Chopp@leg.wa.gov">Frank.Chopp@leg.wa.gov</a></td>
 <td align="left">(360) 786-7920</td>
-<td align="left"><a href="http://housedemocrats.wa.gov/legislators/Frank-Chopp/" class="uri">http://housedemocrats.wa.gov/legislators/Frank-Chopp/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://housedemocrats.wa.gov/legislators/Nicole-Macri/">Nicole Macri</a></td>
+<td align="left">WA State House District 43</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:Nicole.Macri@leg.wa.gov">Nicole.Macri@leg.wa.gov</a></td>
 <td align="left">(360) 786-7826</td>
-<td align="left"><a href="http://housedemocrats.wa.gov/legislators/Nicole-Macri/" class="uri">http://housedemocrats.wa.gov/legislators/Nicole-Macri/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.kingcounty.gov/council/gossett.aspx">Larry Gossett</a></td>
+<td align="left">County Council District 2</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:Larry.Gossett@kingcounty.gov">Larry.Gossett@kingcounty.gov</a></td>
 <td align="left">(206) 477-1002</td>
-<td align="left"><a href="http://www.kingcounty.gov/council/gossett.aspx" class="uri">http://www.kingcounty.gov/council/gossett.aspx</a></td>
 <td align="left"><a href="http://www.kingcounty.gov/Gossett/~/media/Gossett/images/2011/Gossett_web.ashx" class="uri">http://www.kingcounty.gov/Gossett/~/media/Gossett/images/2011/Gossett_web.ashx</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.kingcounty.gov/depts/sheriff/about-us/biographies.aspx">John Urquhart</a></td>
+<td align="left">Sheriff</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:sheriff@kingcounty.gov">sheriff@kingcounty.gov</a></td>
 <td align="left">(206) 296-4155</td>
-<td align="left"><a href="http://www.kingcounty.gov/depts/sheriff/about-us/biographies.aspx" class="uri">http://www.kingcounty.gov/depts/sheriff/about-us/biographies.aspx</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.kingcounty.gov/depts/assessor/About-Us/Assessors-Bio.aspx">John Wilson</a></td>
+<td align="left">Assessor</td>
 <td align="left">Unknown</td>
 <td align="left">NULL</td>
 <td align="left">(206) 296-7300</td>
-<td align="left"><a href="http://www.kingcounty.gov/depts/assessor/About-Us/Assessors-Bio.aspx" class="uri">http://www.kingcounty.gov/depts/assessor/About-Us/Assessors-Bio.aspx</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.kingcounty.gov/elected/executive/constantine/about/biography.aspx">Dow Constantine</a></td>
+<td align="left">County Executive</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:kcexec@kingcounty.gov">kcexec@kingcounty.gov</a></td>
 <td align="left">(206) 263-9600</td>
-<td align="left"><a href="http://www.kingcounty.gov/elected/executive/constantine/about/biography.aspx" class="uri">http://www.kingcounty.gov/elected/executive/constantine/about/biography.aspx</a></td>
 <td align="left"><a href="http://www.kingcounty.gov/~/media/elected/portal/elected-exec-lg.ashx?la=en" class="uri">http://www.kingcounty.gov/~/media/elected/portal/elected-exec-lg.ashx?la=en</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.kingcounty.gov/depts/elections/about-us/meet-the-director.aspx">Julie Wise</a></td>
+<td align="left">Elections Director</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:elections@kingcounty.gov">elections@kingcounty.gov</a></td>
 <td align="left">(206) 477-4140</td>
-<td align="left"><a href="http://www.kingcounty.gov/depts/elections/about-us/meet-the-director.aspx" class="uri">http://www.kingcounty.gov/depts/elections/about-us/meet-the-director.aspx</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.kingcounty.gov/depts/prosecutor/bio.aspx">Dan Satterberg</a></td>
+<td align="left">Prosecuting Attorney</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:Prosecuting.Attorney@kingcounty.gov">Prosecuting.Attorney@kingcounty.gov</a></td>
 <td align="left">(206) 477-1200</td>
-<td align="left"><a href="http://www.kingcounty.gov/depts/prosecutor/bio.aspx" class="uri">http://www.kingcounty.gov/depts/prosecutor/bio.aspx</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.kingcounty.gov/courts/superior-court/directory/judges.aspx">Catherine Moore</a></td>
+<td align="left">King County Superior Court Judge</td>
 <td align="left">Unknown</td>
 <td align="left"><a href="mailto:moore.court@kingcounty.gov">moore.court@kingcounty.gov</a></td>
 <td align="left">(206) 477-1591</td>
-<td align="left"><a href="http://www.kingcounty.gov/courts/superior-court/directory/judges.aspx" class="uri">http://www.kingcounty.gov/courts/superior-court/directory/judges.aspx</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.seattle.gov/mayor/">Tim Burgess</a></td>
+<td align="left">Mayor</td>
 <td align="left">Democratic</td>
 <td align="left"><a href="mailto:tim.burgess@seattle.gov">tim.burgess@seattle.gov</a></td>
 <td align="left">(206) 684-4000</td>
-<td align="left"><a href="http://www.seattle.gov/mayor/" class="uri">http://www.seattle.gov/mayor/</a></td>
 <td align="left"><a href="http://www.seattle.gov/Images/Council/Members/Burgess/burgess_thumb.jpg" class="uri">http://www.seattle.gov/Images/Council/Members/Burgess/burgess_thumb.jpg</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.seattle.gov/law/">Pete Holmes</a></td>
+<td align="left">Attorney</td>
 <td align="left">NA</td>
 <td align="left">NULL</td>
 <td align="left">(206) 684-8200</td>
-<td align="left"><a href="http://www.seattle.gov/law/" class="uri">http://www.seattle.gov/law/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="NULL">Kirsten Harris-Talley</a></td>
+<td align="left">Council, Position 8</td>
 <td align="left">NA</td>
 <td align="left">NULL</td>
 <td align="left">(206) 684-8806</td>
-<td align="left">NULL</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.seattle.gov/council/meet-the-council/lorena-gonz%C3%A1lez">Lorena Gonzalez</a></td>
+<td align="left">Council, Position 9</td>
 <td align="left">NA</td>
 <td align="left"><a href="mailto:Lorena.Gonzalez@seattle.gov">Lorena.Gonzalez@seattle.gov</a></td>
 <td align="left">(206) 684-8802</td>
-<td align="left"><a href="http://www.seattle.gov/council/meet-the-council/lorena-gonz%C3%A1lez">http://www.seattle.gov/council/meet-the-council/lorena-gonz%C3%A1lez</a></td>
 <td align="left"><a href="http://www.seattle.gov/Images/Council/Members/Gonzalez/gonzalez_thumb.jpg" class="uri">http://www.seattle.gov/Images/Council/Members/Gonzalez/gonzalez_thumb.jpg</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="NULL">Pat (Patrice) McCarthy</a></td>
+<td align="left">State Auditor</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(360) 902-0370</td>
-<td align="left">NULL</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="NULL">Duane Davidson</a></td>
+<td align="left">State Treasurer</td>
 <td align="left">Republican</td>
 <td align="left">NULL</td>
 <td align="left">(360) 902-9001</td>
-<td align="left">NULL</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.atg.wa.gov/">Bob Ferguson</a></td>
+<td align="left">Attorney General</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(360) 753-6200</td>
-<td align="left"><a href="http://www.atg.wa.gov/" class="uri">http://www.atg.wa.gov/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="http://www.sos.wa.gov/">Kim Wyman</a></td>
+<td align="left">Secretary of State</td>
 <td align="left">Republican</td>
 <td align="left"><a href="mailto:kim.wyman@sos.wa.gov">kim.wyman@sos.wa.gov</a></td>
 <td align="left">(360) 902-4151</td>
-<td align="left"><a href="http://www.sos.wa.gov/" class="uri">http://www.sos.wa.gov/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.insurance.wa.gov/">Mike Kreidler</a></td>
+<td align="left">Insurance Commissioner</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(360) 725-7000</td>
-<td align="left"><a href="http://www.insurance.wa.gov/" class="uri">http://www.insurance.wa.gov/</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="NULL">Hilary Franz</a></td>
+<td align="left">Commissioner of Public Lands</td>
 <td align="left">Democratic</td>
 <td align="left">NULL</td>
 <td align="left">(360) 902-1000</td>
-<td align="left">NULL</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="NULL">Chris Reykdal</a></td>
+<td align="left">State Superintendent of Public Instruction</td>
 <td align="left">Nonpartisan</td>
 <td align="left">NULL</td>
 <td align="left">(360) 725-6115</td>
-<td align="left">NULL</td>
 <td align="left">NA</td>
 </tr>
 </tbody>

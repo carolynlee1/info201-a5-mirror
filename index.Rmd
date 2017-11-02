@@ -29,7 +29,16 @@ yea <- officials %>%
   group_by(photoUrl != "NA") %>%
   mutate(paste0("![image](", photoUrl, ")")) 
 
-kable(officials)
+num.to.rep <- unlist(lapply(parsed.data$offices$officialIndices, length))
+expanded <- offices[rep(row.names(offices), num.to.rep), ]
+officials <- officials %>% mutate(index = row_number() -1)
+expanded <- expanded %>% mutate(index = row_number() -1) %>%
+  rename(position = name) 
+joined <- left_join(officials, expanded)
+joined <- select(joined, name, position, party, emails, phones, photoUrl)
+
+
+kable(joined)
 ```
 
 

@@ -3,9 +3,8 @@ print(civic.key)
 library("httr")
 library(knitr)
 library(dplyr)
-query.params <- list(key = print(api.key.civic), address = "4348 9th Avenue, Seattle WA 98105")
+query.params <- list(key = print(civic.key), address = "4348 9th Avenue, Seattle WA 98105")
 response <- GET("https://www.googleapis.com/civicinfo/v2/representatives", query = query.params)
-print(response)
 body <- content(response, "text")
 print(body)
 
@@ -15,6 +14,7 @@ parsed.data <- fromJSON(body)
 names(parsed.data)
 
 offices <- parsed.data$offices
+officies <- flatten(offices)
 officials <- parsed.data$officials
 officials <- flatten(officials)
 
