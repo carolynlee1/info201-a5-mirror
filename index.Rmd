@@ -10,6 +10,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(knitr)
 source('civic-info.R')
+source('propublica.R')
+
+officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
+
 
 ```
 
@@ -23,11 +27,13 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r cars}
 
-officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
 
-yea <- officials %>%
-  group_by(photoUrl != "NA") %>%
-  mutate(paste0("![image](", photoUrl, ")")) 
+photo.data <- officials %>%
+  mutate(ifelse(is.na(photoUrl) == FALSE, paste0("![image](", photoUrl, ")"), "Not available"))
+
+
+officials$photoUrl <- photo.data[, 7]
+
 
 num.to.rep <- unlist(lapply(parsed.data$offices$officialIndices, length))
 expanded <- offices[rep(row.names(offices), num.to.rep), ]
@@ -37,6 +43,8 @@ expanded <- expanded %>% mutate(index = row_number() -1) %>%
 joined <- left_join(officials, expanded)
 joined <- select(joined, name, position, party, emails, phones, photoUrl)
 
+gender.plot <- barplot(gender.data, horiz = TRUE)
+party.plot <- barplot(party.data, horiz = TRUE)
 
 kable(joined)
 ```
@@ -44,12 +52,3 @@ kable(joined)
 
 
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
