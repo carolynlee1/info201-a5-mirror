@@ -4,28 +4,20 @@ author: "Carolyn"
 date: "10/31/2017"
 output: html_document
 ---
-
+# Who Represents You?
+## Your representatives
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("httr")
 library(dplyr)
 library(knitr)
+library(stringr)
 source('civic-info.R')
 source('propublica.R')
-
-
-
 ```
+This is a report about the political representatives based on the address entered (`r address.input`). This report draws upon data from the [ProPublica API](https://projects.propublica.org/api-docs/congress-api/) and the [Google Civic Data API](https://developers.google.com/civic-information/). As an overview, here is a summary of _who_ represents the address given (from the **local** to the **national** level).
 
-## R Markdown
-
-
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
+```{r table, echo=FALSE}
 officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
 
 photo.data <- officials %>%
@@ -34,7 +26,8 @@ photo.data <- officials %>%
 emails.data <- officials %>% 
   mutate(ifelse(officials$emails == "NULL", paste("Not available"), officials$emails))
 
-officials$photoUrl <- photo.data[, 7]
+officials$Photo <- photo.data[, 7]
+
 officials$emails <- emails.data[, 7]
 
 num.to.rep <- unlist(lapply(parsed.data$offices$officialIndices, length))
@@ -43,12 +36,20 @@ officials <- officials %>% mutate(index = row_number() -1)
 expanded <- expanded %>% mutate(index = row_number() -1) %>%
   rename(position = name) 
 joined <- left_join(officials, expanded)
-joined <- select(joined, name, position, party, emails, phones, photoUrl)
+joined <- select(joined, name, position, party, emails, phones, Photo)
 officials <- joined
+names(officials) <- str_to_title(names(officials))
 kable(officials)
 
-gender.plot <- barplot(gender.data, horiz = TRUE)
-party.plot <- barplot(party.data, horiz = TRUE)
+```
+
+## House of Representatives
+
+Now let\'s take a look at all of the congressional representatives (in the House of Representatives, not the Senate) for the state in which the address was given. We see this breakdown by gender and political party for those members of the House:
+
+```{r plots, echo=FALSE}
+gender.plot <- barplot(gender.data, horiz = TRUE, main = "Representatives by Gender", xlab = "# of Representatives", names.arg=c("Females", "Males"))
+party.plot <- barplot(party.data, horiz = TRUE, main = "Representatives by Party", xlab = "# of Representatives", names.arg=c("Republican", "Democrat"))
 ```
 
 # `r member.name`

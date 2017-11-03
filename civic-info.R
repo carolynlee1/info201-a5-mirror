@@ -3,11 +3,10 @@ library("httr")
 library(knitr)
 library(dplyr)
 library(jsonlite)
-query.params <- list(key = print(civic.key), address = "Phoenix, Arizona")
+address.input <- "Denver"
+query.params <- list(key = print(civic.key), address = address.input)
 response <- GET("https://www.googleapis.com/civicinfo/v2/representatives", query = query.params)
 body <- content(response, "text")
-
-
 
 parsed.data <- fromJSON(body)
 offices <- parsed.data$offices
