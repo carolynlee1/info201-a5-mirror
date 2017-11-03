@@ -1,20 +1,24 @@
-source("api-keys.R")
-print(civic.key)
+source('api-keys.R')
 library("httr")
 library(knitr)
 library(dplyr)
-query.params <- list(key = print(civic.key), address = "Los Angeles")
+library(jsonlite)
+query.params <- list(key = print(civic.key), address = "Phoenix, Arizona")
 response <- GET("https://www.googleapis.com/civicinfo/v2/representatives", query = query.params)
 body <- content(response, "text")
-print(body)
 
-library(jsonlite)
+
 
 parsed.data <- fromJSON(body)
 offices <- parsed.data$offices
-officies <- flatten(offices)
+offices <- flatten(offices)
 officials <- parsed.data$officials
 officials <- flatten(officials)
+
+input <- parsed.data$normalizedInput
+
+state.input <- input$state
+
 
 officials <- select(officials, name, party, emails, phones, urls, photoUrl)
 

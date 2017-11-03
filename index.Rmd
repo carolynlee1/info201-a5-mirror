@@ -7,12 +7,12 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+library("httr")
+library(dplyr)
 library(knitr)
 source('civic-info.R')
 source('propublica.R')
 
-officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
 
 
 ```
@@ -26,14 +26,16 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-
+officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
 
 photo.data <- officials %>%
   mutate(ifelse(is.na(photoUrl) == FALSE, paste0("![image](", photoUrl, ")"), "Not available"))
 
+emails.data <- officials %>% 
+  mutate(ifelse(officials$emails == "NULL", paste("Not available"), officials$emails))
 
 officials$photoUrl <- photo.data[, 7]
-
+officials$emails <- emails.data[, 7]
 
 num.to.rep <- unlist(lapply(parsed.data$offices$officialIndices, length))
 expanded <- offices[rep(row.names(offices), num.to.rep), ]
@@ -42,13 +44,15 @@ expanded <- expanded %>% mutate(index = row_number() -1) %>%
   rename(position = name) 
 joined <- left_join(officials, expanded)
 joined <- select(joined, name, position, party, emails, phones, photoUrl)
+officials <- joined
+kable(officials)
 
 gender.plot <- barplot(gender.data, horiz = TRUE)
 party.plot <- barplot(party.data, horiz = TRUE)
-
-kable(joined)
 ```
 
+# `r member.name`
+Let\'s learn a bit more about one representative, `r member.name`. The representative is `r age` years old, and you can find them on twitter at [`r members.results$twitter_account`](`r twitter`). Interestingly, of the last `r count(votes.info)` congressional votes, the representative was inaccordance with the majority `r total.percent` of the time.
 
 
 
