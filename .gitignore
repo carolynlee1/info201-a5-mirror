@@ -32,5 +32,5 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-#Api Keys file
+# Api Keys file
 api-keys.R
