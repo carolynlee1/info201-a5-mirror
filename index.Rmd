@@ -1,13 +1,10 @@
----
-title: "index.Rmd"
-author: "Carolyn"
-date: "10/31/2017"
-output: html_document
----
-# Who Represents You?
-## Your representatives
+
+# Who Represents You? 
+
+
+### Your representatives
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library("httr")
 library(dplyr)
 library(knitr)
@@ -17,7 +14,7 @@ source('propublica.R')
 ```
 This is a report about the political representatives based on the address entered (`r address.input`). This report draws upon data from the [ProPublica API](https://projects.propublica.org/api-docs/congress-api/) and the [Google Civic Data API](https://developers.google.com/civic-information/). As an overview, here is a summary of _who_ represents the address given (from the **local** to the **national** level).
 
-```{r table, echo=FALSE}
+```{r table, echo=FALSE, message=FALSE}
 officials$name <- paste0("[", officials$name, "](", officials$urls, ")")
 
 photo.data <- officials %>%
@@ -43,17 +40,17 @@ kable(officials)
 
 ```
 
-## House of Representatives
+### House of Representatives
 
 Now let\'s take a look at all of the congressional representatives (in the House of Representatives, not the Senate) for the state in which the address was given. We see this breakdown by gender and political party for those members of the House:
 
 ```{r plots, echo=FALSE}
 gender.plot <- barplot(gender.data, horiz = TRUE, main = "Representatives by Gender", xlab = "# of Representatives", names.arg=c("Females", "Males"))
-party.plot <- barplot(party.data, horiz = TRUE, main = "Representatives by Party", xlab = "# of Representatives", names.arg=c("Republican", "Democrat"))
+party.plot <- barplot(party.data, horiz = TRUE, main = "Representatives by Party", xlab = "# of Representatives", names.arg=c("Democrat", "Republican"))
 ```
 
-# `r member.name`
-Let\'s learn a bit more about one representative, `r member.name`. The representative is `r age` years old, and you can find them on twitter at [`r members.results$twitter_account`](`r twitter`). Interestingly, of the last `r count(votes.info)` congressional votes, the representative was inaccordance with the majority `r total.percent` of the time.
+### `r member.name`
+Let\'s learn a bit more about one representative, `r member.name`. The representative is `r age` years old, and you can find them on Twitter at [`r members.results$twitter_account`](`r twitter`). Interestingly, of the last `r count(votes.info)` congressional votes, the representative was inaccordance with the majority `r total.percent` of the time.
 
 
 

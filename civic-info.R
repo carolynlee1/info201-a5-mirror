@@ -3,7 +3,7 @@ library("httr")
 library(knitr)
 library(dplyr)
 library(jsonlite)
-address.input <- "Denver"
+address.input <- "Philadelphia"
 query.params <- list(key = print(civic.key), address = address.input)
 response <- GET("https://www.googleapis.com/civicinfo/v2/representatives", query = query.params)
 body <- content(response, "text")
@@ -17,7 +17,6 @@ officials <- flatten(officials)
 input <- parsed.data$normalizedInput
 
 state.input <- input$state
-
 
 officials <- select(officials, name, party, emails, phones, urls, photoUrl)
 

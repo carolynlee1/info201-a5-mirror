@@ -9,7 +9,6 @@ endpoint <- paste0("https://api.propublica.org/congress/v1/members/",chamber, "/
 response.propublica <- GET(endpoint, add_headers("X-API-Key" = propublica.key))
 body.propublica <- content(response.propublica, "text")
 propublica.parsed <- fromJSON(body.propublica)
-names(propublica.parsed)
 results <- propublica.parsed$results
 
 member <- results$id
@@ -20,11 +19,12 @@ votes.response <- GET(votes.endpoint, add_headers("X-API-Key" = propublica.key))
 members.body <- content(members.response, "text")
 members.parsed <- fromJSON(members.body)
 members.results <- members.parsed$results
+
 birth <- members.results$date_of_birth
 this.year <- as.numeric(substring(Sys.Date(), 1, 4))
 age <- this.year - as.numeric(substring(birth, 1, 4))
 twitter <- paste0("http://www.twitter.com/", members.results$twitter_account)
-print(votes.response)
+
 votes.body <- content(votes.response, "text")
 votes.parsed <- fromJSON(votes.body)
 votes.results <- votes.parsed$results
@@ -43,9 +43,6 @@ yes.percent <- round(yes.num / count(votes.position) * 100, digits = 0)
 total.percent <- paste0(no.percent + yes.percent, "%")
 
 member.name <- paste(members.results$first_name, members.results$last_name)
-
-print(members.response)
-names(members.response)
 
 female.count <- results %>%
   filter(gender == "F") %>%
